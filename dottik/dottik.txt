@@ -1,0 +1,90 @@
+//Refined by my friend Dottik.
+using System;
+using System.Text;
+namespace multiple
+{
+    public static class Program
+    {
+        static long correct, incorrect;
+        static Random rnd = new Random();
+        public static void Main(string[] args)
+        {
+            long Maximum = 0;
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.WriteLine("What is the max multiple you would like? ");
+            while (true)
+            {
+                try
+                {
+                    Maximum = Convert.ToInt64(Console.ReadLine());
+                    if (Maximum <= 0)
+                    {
+                        Console.WriteLine("[Warn] Please enter a number greater or equal to 1");
+                        continue;
+                    }
+                    break;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("[Error] Please enter a valid number");
+                }
+            }
+            while (true)
+            {
+                long first = rnd.NextInt64(1, Maximum);
+                long second = rnd.NextInt64(1, Maximum);
+                long result = first * second;
+                long usrAnswer = 0;
+                Console.WriteLine($"{first}*{second} = ?");
+                while (true)
+                {
+                    try
+                    {
+                        usrAnswer = Convert.ToInt64(Console.ReadLine());
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("[Error] Please enter a valid number!");
+                    }
+                }
+                if (usrAnswer == (first * second))
+                {
+                    correct++;
+                    Console.Clear();
+                    ShowGameStatus(false, usrAnswer.ToString());
+                }
+                else if (usrAnswer != (first * second))
+                {
+                    incorrect++;
+                    Console.Clear();
+                    ShowGameStatus(true, usrAnswer.ToString());
+                }
+            }
+        }
+        public static void ChangeConsoleColor(ConsoleColor color)
+            => Console.ForegroundColor = color;
+        public static void ShowGameStatus(bool isWrong, string answer)
+        {
+            ConsoleColor ogColor = Console.ForegroundColor;
+            if (isWrong)
+            {
+                ChangeConsoleColor(ConsoleColor.Red);
+                Console.WriteLine($"{answer} ❌");
+                Console.WriteLine("Not quite...");
+            }
+            else
+            {
+                ChangeConsoleColor(ConsoleColor.Green);
+                Console.WriteLine($"{answer} ✅");
+                ChangeConsoleColor(ConsoleColor.White);
+                Console.WriteLine("Good Job!");
+            }
+            ChangeConsoleColor(ConsoleColor.Green);
+            Console.WriteLine($"Correctly solved ✅ = {correct}");
+            ChangeConsoleColor(ConsoleColor.Red);
+            Console.WriteLine($"Incorrect solved ❌ = {incorrect}");
+            Console.ForegroundColor = ogColor;
+        }
+    }
+}
